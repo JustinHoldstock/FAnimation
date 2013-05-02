@@ -33,7 +33,7 @@ public class FAnimSprite : FSprite {
 		else {
 			setAnimation(m_animations.Keys.First());
 			
-			Init(FFacetType.Quad, m_currentFrame.Element,1);
+			Init(FFacetType.Quad, _element,1);
 			
 			_isAlphaDirty = true;
 			
@@ -44,12 +44,37 @@ public class FAnimSprite : FSprite {
 	public void setAnimation(string _anim) {
 		if(m_animations.ContainsKey(_anim)) {
 			m_strCurrentAnimation = _anim;
+			_element = m_animations[m_strCurrentAnimation][0].Element;
 		}
 		else {
 			Debug.Log("Animation Doesn't exists for " + _anim + " Reverting");
 		}
 		
 		resetCurrentFrame();
+	}
+	
+	override public void Redraw(bool shouldForceDirty, bool shouldUpdateDepth)
+	{
+		m_fFrameTimer += Time.deltaTime;
+		
+		if(m_fFrameTimer > m_currentFrame.Delay) {
+			
+			++m_nFrame;
+			
+			if(m_nFrame >= m_animations[m_strCurrentAnimation].Count) {
+				m_nFrame = 0;
+			}
+			
+			m_currentFrame = m_animations[m_strCurrentAnimation][m_nFrame];
+			
+			_element = m_currentFrame.Element;
+			m_fFrameDelay = m_currentFrame.Delay;
+			
+			m_fFrameTimer = 0;
+			shouldForceDirty = true;
+		}
+		
+		base.Redraw(shouldForceDirty, shouldUpdateDepth);
 	}
 	
 	private void resetCurrentFrame() {

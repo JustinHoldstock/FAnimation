@@ -53,7 +53,7 @@ public class FAnimationManager {
 			string id = name[0];
 			string animation = length > 1 ? name[1] : "default";
 			int frameNum = length > 2 ? int.Parse(name[2]) : 1;
-			float delay = length > 3 ? float.Parse(name[3])/60.0f : 1.0f/60.0f;
+			float delay = length > 3 ? 1.0f/float.Parse(name[3]) : 1.0f/60.0f;
 			
 			Frame frame = new Frame();
 			frame.Num = frameNum;
