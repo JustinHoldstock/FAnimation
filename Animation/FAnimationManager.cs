@@ -27,7 +27,7 @@ public class FAnimationManager {
 	}
 	
 	//oad an image using FAtlasManager and parse its data
-	public void loadImage(string _path) {
+	public void LoadAtlas(string _path) {
 		Futile.atlasManager.LoadAtlas(_path);
 		//parse data. going to be a lot like FAtlasManager.AddAtlas(FAtlas atlas);
 		addAtlas(Futile.atlasManager.GetAtlasWithName(_path));
@@ -49,10 +49,11 @@ public class FAnimationManager {
 			element.atlasIndex = _atlas.index;
 			//remember the concention "ID-ANIMATION-#-DELAY"
 			string[] name = element.name.Split('-');
+			int length = name.Length;
 			string id = name[0];
-			string animation = name[1] != null ? name[1] : "default";
-			int frameNum = name[2] != null ? int.Parse(name[2]) : 1;
-			float delay = name[3] != null ? float.Parse(name[3])/60.0f : 1.0f/60.0f;
+			string animation = length > 1 ? name[1] : "default";
+			int frameNum = length > 2 ? int.Parse(name[2]) : 1;
+			float delay = length > 3 ? float.Parse(name[3])/60.0f : 1.0f/60.0f;
 			
 			Frame frame = new Frame();
 			frame.Num = frameNum;
@@ -65,6 +66,8 @@ public class FAnimationManager {
 				spriteData.data = new Dictionary<string, List<Frame>>();
 				spriteData.data.Add(animation, new List<Frame>());
 				spriteData.data[animation].Add(frame);
+				
+				m_spriteData[id] = spriteData;
 			}
 			else {
 				//it's a duplicate, so check for new animation name
@@ -89,7 +92,13 @@ public class FAnimationManager {
 	/************* GETTING DATA TO A SPRITE *************/
 	//return sprite data based off a sprite id
 	public Dictionary<string, List<Frame>> getSpriteData(string _id) {
-		return m_spriteData[_id].data;
+		if(m_spriteData.ContainsKey(_id)) {
+			return m_spriteData[_id].data;
+		}
+		else {
+			Debug.LogWarning("Data not present " + _id);
+			return null;
+		}
 	}
 }
 
