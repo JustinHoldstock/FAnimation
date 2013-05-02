@@ -40,5 +40,3 @@ MORE TO COME IN LATER UPDATES:
 -anything suggested by other users!
 
 **disclaimer. Will be tidied and optimized. Works right now, just no asset cleanup.
-
-**code comes as is, but I'm open to suggestions!
