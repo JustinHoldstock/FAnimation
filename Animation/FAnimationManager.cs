@@ -81,7 +81,7 @@ public class FAnimationManager {
 				spriteData.data[animation].Add(frame);
 				
 				//then sort
-				//#TODO SORT
+				spriteData.data[animation] = spriteData.data[animation].OrderBy(f=>f.Num).ToList();
 			}
 		}
 	}
