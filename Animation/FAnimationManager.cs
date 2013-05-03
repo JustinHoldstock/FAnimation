@@ -30,16 +30,19 @@ public class FAnimationManager {
 	public void LoadAtlas(string _path) {
 		Futile.atlasManager.LoadAtlas(_path);
 		//parse data. going to be a lot like FAtlasManager.AddAtlas(FAtlas atlas);
-		addAtlas(Futile.atlasManager.GetAtlasWithName(_path));
+		addAtlasData(Futile.atlasManager.GetAtlasWithName(_path), _path);
 	}
 	
 	//unload all sprite data and the atlas manager
-	public void unloadImage(string _path) {
+	public void UnloadAtlas(string _path) {
+		Futile.atlasManager.UnloadAtlas(_path);
+		//remove from animation manager
+		unloadAtlasData(_path);
 	}
 		
 	/******* PARSING DATA ************/
 	//add an atlas, and then take out it's elements and put them into m_Atlases
-	private void addAtlas(FAtlas _atlas) {
+	private void addAtlasData(FAtlas _atlas, string _atlasID) {
 		
 		int elementCount = _atlas.elements.Count;
 		for(int e = 0; e<elementCount; ++e)
@@ -66,6 +69,7 @@ public class FAnimationManager {
 				spriteData.data = new Dictionary<string, List<Frame>>();
 				spriteData.data.Add(animation, new List<Frame>());
 				spriteData.data[animation].Add(frame);
+				spriteData.AtlasID = _atlasID;
 				
 				m_spriteData[id] = spriteData;
 			}
@@ -87,6 +91,27 @@ public class FAnimationManager {
 	}
 	
 	
+	//if any sprite data holds a similar atlas ID, then lets get rid of the sprite data
+	private void unloadAtlasData(string _path) {
+		//debug
+		List<string> removalKeys = new List<string>();
+		
+		foreach(KeyValuePair<string, SpriteData> entry in m_spriteData) {
+			if(entry.Value.AtlasID == _path) {
+				//remove the data set
+				entry.Value.data.Clear();
+				//add it to the removal key list
+				removalKeys.Add(entry.Key);
+			}
+		}
+		
+		foreach(string key in removalKeys) {
+			m_spriteData.Remove(key);
+		}
+		
+		//Debug.Log("Just removed " + removalKeys.Count + " element. Dict is now length: " + m_spriteData.Count);
+	}
+	
 	
 	
 	/************* GETTING DATA TO A SPRITE *************/
@@ -107,6 +132,7 @@ public class FAnimationManager {
 //for the sake of code readability, I'm going to make this easier with structs
 public struct SpriteData {
 	public Dictionary<string, List<Frame>> data;
+	public string AtlasID;
 }
 
 public struct Frame {
