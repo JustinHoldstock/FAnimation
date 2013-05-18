@@ -1,5 +1,6 @@
 This is a plugin for Matt Rix's Futile Framework, https://github.com/MattRix/Futile, that allows for animations to be loaded and played using FAnimSprite.
 
+<h1>Naming Convention</h1>
 The naming convention of all assets must be as follows: SpriteID-Animation-FrameNum-Delay
 <p>
 ie) SuperDude-Jump-1-60 <br/>
@@ -17,6 +18,7 @@ Frame is parsed as an int to be used for sorting frame list ** is optional, need
 Delay will be parsed as a float value. indicates FPS for animation to be played at. ** optional, uses 60FPS by default   **
 
 
+<h1>Use</h1>
 So, steps to use animations:
 
 1) Replace all Futile.atlasManager.LoadAtlas("path")
@@ -34,16 +36,10 @@ mySprite.setAnimation("Run");
 mySprite.load("EvilDude");
 
 
-MORE TO COME IN LATER UPDATES:
-
--proper cleanup 
+<h1>More To Come</h1>
 
 -setting a delay factor to speed up and slow down animations
 
 -optimizations
 
--sorting frames based on FrameNum
-
 -anything suggested by other users!
-
-**disclaimer. Will be tidied and optimized. Works right now, just no asset cleanup.
