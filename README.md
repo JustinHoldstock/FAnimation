@@ -25,14 +25,14 @@ So, steps to use animations:
 with
 FAnimationManager.Instance.LoadAtlas("path");
 
-2)FAnimSprite construtor takes in the SpriteID (outlined in the Naming Convention)
+2)FAnimSprite construtor takes in the SpriteID (outlined in the Naming Convention) <br>
 FAnimSprite mySprite = new FAnimSprite("SuperDude");
 
-3)To change the animation of the asset call setAnimation("animationName")
+3)To change the animation of the asset call setAnimation("animationName")<br>
 mySprite.setAnimation("Run");
 
-4)To change the atlas/id of a sprite, just use FAnimSprite.load("SpriteID");
-//mySprite is currently using the SuperDude sprite data. next line changes it to use EvilDude images and data
+4)To change the atlas/id of a sprite, just use FAnimSprite.load("SpriteID");<br>
+//mySprite is currently using the SuperDude sprite data. next line changes it to use EvilDude images and data<br>
 mySprite.load("EvilDude");
 
 
