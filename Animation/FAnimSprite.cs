@@ -41,18 +41,6 @@ public class FAnimSprite : FSprite {
 		}
 	}
 	
-	public void setAnimation(string _anim) {
-		if(m_animations.ContainsKey(_anim)) {
-			m_strCurrentAnimation = _anim;
-			_element = m_animations[m_strCurrentAnimation][0].Element;
-		}
-		else {
-			Debug.Log("Animation Doesn't exists for " + _anim + " Reverting");
-		}
-		
-		resetCurrentFrame();
-	}
-	
 	override public void Redraw(bool shouldForceDirty, bool shouldUpdateDepth)
 	{
 		m_fFrameTimer += Time.deltaTime;
@@ -77,7 +65,20 @@ public class FAnimSprite : FSprite {
 		base.Redraw(shouldForceDirty, shouldUpdateDepth);
 	}
 	
-	private void resetCurrentFrame() {
+	public void setAnimation(string _anim) {
+		if(_anim != m_strCurrentAnimation) {
+			if(m_animations.ContainsKey(_anim)) {
+				m_strCurrentAnimation = _anim;
+				_element = m_animations[m_strCurrentAnimation][0].Element;
+			}
+			else {
+				Debug.Log("Animation Doesn't exists for " + _anim + " Reverting");
+			}
+			resetCurrentFrame();
+		}		
+	}
+	
+	public void resetCurrentFrame() {
 		m_currentFrame = m_animations[m_strCurrentAnimation][0];
 		m_fFrameTimer = 0;
 		m_nFrame = 0;
