@@ -9,12 +9,13 @@ public class FAnimSprite : FSprite {
 	private Frame m_currentFrame;
 	private string m_strCurrentAnimation;
 	private int m_nFrame;
-	private float m_fFrameDelay; //delay between frames
 	private float m_fFrameTimer; //increment by DT to trigger next frames
+	private float m_fPlaySpeed; //the speed at which to play animations
 	
 	public FAnimSprite() : base() {
 		m_nFrame = 0;
 		m_fFrameTimer = 0;
+		m_fPlaySpeed = 1;
 	}
 	
 	public FAnimSprite(string _spriteID) : base() {
@@ -22,6 +23,7 @@ public class FAnimSprite : FSprite {
 		_localVertices = new Vector2[4];
 		m_nFrame = 0;
 		m_fFrameTimer = 0;
+		m_fPlaySpeed = 1;
 		
 		load(_spriteID);
 	}
@@ -45,7 +47,7 @@ public class FAnimSprite : FSprite {
 	
 	override public void Redraw(bool shouldForceDirty, bool shouldUpdateDepth)
 	{
-		m_fFrameTimer += Time.deltaTime;
+		m_fFrameTimer += Time.deltaTime * m_fPlaySpeed;
 		
 		if(m_fFrameTimer > m_currentFrame.Delay) {
 			
@@ -60,7 +62,6 @@ public class FAnimSprite : FSprite {
 			m_currentFrame = m_animations[m_strCurrentAnimation][m_nFrame];
 			
 			_element = m_currentFrame.Element;
-			m_fFrameDelay = m_currentFrame.Delay;
 			
 			m_fFrameTimer = 0;
 			shouldForceDirty = true;
@@ -75,6 +76,15 @@ public class FAnimSprite : FSprite {
 		m_fFrameTimer = 0;
 		m_nFrame = 0;
 	}
+		
+	//triggered at the end of an animation
+	public virtual void onAnimEnd() {
+	}
+	
+	public float PlaySpeed {
+		get { return m_fPlaySpeed; }
+		set { m_fPlaySpeed = value; }
+	}
 	
 	public void setAnimation(string _anim) {
 		
@@ -88,10 +98,6 @@ public class FAnimSprite : FSprite {
 			}
 			resetAnimation();
 		}		
-	}
-	
-	//triggered at the end of an animation
-	public virtual void onAnimEnd() {
 	}
 	
 	public void logAnimations() {
