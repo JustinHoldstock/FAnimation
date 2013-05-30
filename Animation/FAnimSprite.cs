@@ -70,6 +70,17 @@ public class FAnimSprite : FSprite {
 		base.Redraw(shouldForceDirty, shouldUpdateDepth);
 	}
 	
+	#region Animation Helpers
+	//resets play speed to one
+	public void resetPlaySpeed() {
+		PlaySpeed = 1.0f;
+	}
+	
+	//pauses the animation
+	public void pause() {
+		PlaySpeed = 0.0f;
+	}
+	
 	//reset the current animation to its first frame
 	public void resetAnimation() {
 		m_currentFrame = m_animations[m_strCurrentAnimation][0];
@@ -80,7 +91,9 @@ public class FAnimSprite : FSprite {
 	//triggered at the end of an animation
 	public virtual void onAnimEnd() {
 	}
+	#endregion
 	
+	#region ACCESSORS & MUTATORS	
 	public float PlaySpeed {
 		get { return m_fPlaySpeed; }
 		set { m_fPlaySpeed = value; }
@@ -99,6 +112,8 @@ public class FAnimSprite : FSprite {
 			resetAnimation();
 		}		
 	}
+	
+	#endregion
 	
 	public void logAnimations() {
 		foreach(KeyValuePair<string, List<Frame>> kvp in m_animations) {
