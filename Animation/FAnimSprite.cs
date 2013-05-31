@@ -113,6 +113,10 @@ public class FAnimSprite : FSprite {
 		}		
 	}
 	
+	public string getCurrentAnimation() {
+		return m_strCurrentAnimation;
+	}
+	
 	#endregion
 	
 	public void logAnimations() {
