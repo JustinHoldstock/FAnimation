@@ -47,26 +47,29 @@ public class FAnimSprite : FSprite {
 	
 	override public void Redraw(bool shouldForceDirty, bool shouldUpdateDepth)
 	{
-		m_fFrameTimer += Time.deltaTime * m_fPlaySpeed;
-		
-		if(m_fFrameTimer > m_currentFrame.Delay) {
+		//if there/s more than one frame, UPDATE!
+		if(m_animations[m_strCurrentAnimation].Count > 1) {
 			
-			++m_nFrame;
+			m_fFrameTimer += Time.deltaTime * m_fPlaySpeed;
 			
-			//animation has ended, so let's reset the current frame and trigger an event
-			if(m_nFrame >= m_animations[m_strCurrentAnimation].Count) {
-				m_nFrame = 0;
-				onAnimEnd();
+			if(m_fFrameTimer > m_currentFrame.Delay) {
+				
+				++m_nFrame;
+				
+				//animation has ended, so let's reset the current frame and trigger an event
+				if(m_nFrame >= m_animations[m_strCurrentAnimation].Count) {
+					m_nFrame = 0;
+					onAnimEnd();
+				}
+				
+				m_currentFrame = m_animations[m_strCurrentAnimation][m_nFrame];
+				
+				_element = m_currentFrame.Element;
+				
+				m_fFrameTimer = 0;
+				shouldForceDirty = true;
 			}
-			
-			m_currentFrame = m_animations[m_strCurrentAnimation][m_nFrame];
-			
-			_element = m_currentFrame.Element;
-			
-			m_fFrameTimer = 0;
-			shouldForceDirty = true;
-		}
-		
+		}	
 		base.Redraw(shouldForceDirty, shouldUpdateDepth);
 	}
 	
